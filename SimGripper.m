@@ -4,8 +4,8 @@
 % Date: 09/10/2015
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear all
-clc
+% clear all
+% clc
 
 %----------------------Gripper Parameters------------------------%
 m_G = .05; %kg  (mass of gripper)
@@ -40,9 +40,9 @@ Gripper = struct('m',m_G,'I',I_G,'mu_s1',mu_s1,'mu_k1',mu_k1,'mu_s2',mu_s2, ...
 
 
 %-----------------------Object Parameters------------------------%
-m_o = 1.5526; %kg  (mass of object)
-R = 9*.5*.0254; %m  (radius of object)
-I_o = .0128;%.0214; %kg*m^2  (inertia of object)
+m_o = 0.01; % 1.5526; %kg  (mass of object)
+R = 0.4; %9*.5*.0254; %m  (radius of object)
+I_o = 0.01; %.0128;%.0214; %kg*m^2  (inertia of object)
 Object = struct('m',m_o,'I',I_o,'R',R);
 %----------------------------------------------------------------%
 
@@ -64,7 +64,7 @@ phi = 0;
 omega = 0; %rad/s
 
 speed = 1; %animation playback speed
-T = 3; %max time to run simulation
+T = 2; %max time to run simulation
 dt = .0001;
 
 offset = .08; angle = 0*pi/180; vel = .3; Dist = .15;
@@ -79,16 +79,16 @@ X_0 = [x_G, y_G, theta, x_G_dot, y_G_dot, theta_dot, ...
 % options = odeset('Events',TerminalEvent,'RelTol',1e-6);
 %options = odeset('RelTol',1e-6);
 
-offset_success = zeros(1,1000);
-offset_failure = zeros(1,1000);
-angvel_success = zeros(1,1000);
-angvel_failure = zeros(1,1000);
+offset_success = zeros(1,100);
+offset_failure = zeros(1,100);
+angvel_success = zeros(1,100);
+angvel_failure = zeros(1,100);
 
 i_success = 1;
 i_failure = 1;
 tic
-for offset = -.13:.01:.13
-    for rotation = -1000:100:1000
+for offset = 0.1 %-.13:.05:.13
+    for rotation =  100 % -1000:100:1000
         omega = rotation*pi/180;
         [x_o, y_o, x_o_dot, y_o_dot] = GetICs(offset, angle, vel, Object, Gripper, Dist);
         X_0 = [x_G, y_G, theta, x_G_dot, y_G_dot, theta_dot, ...
@@ -112,6 +112,11 @@ angvel_success = angvel_success(1:i_success-1);
 offset_failure = offset_failure(1:i_failure-1);
 angvel_failure = angvel_failure(1:i_failure-1);
 
+% figure;
+% hold on;
+% plot(offset_success, angvel_success, 'x')
+% plot(offset_failure, angvel_failure, 'o')
+% 
 
 
 %ODE45 solver. Only works for non-stiff formulations
@@ -124,7 +129,7 @@ if caught_i
     Xout = Xout(1:caught_i-1,:);
 end
 
-AnimateGripper(Tout,Xout,Gripper,Object,speed);
+% AnimateGripper(Tout,Xout,Gripper,Object,speed);
 %MovieGen(Tout,Xout,Gripper,Object,speed,filename)
     
 

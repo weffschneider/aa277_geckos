@@ -17,8 +17,9 @@ function [handle] = DrawDamper(x1,y1,x2,y2,Width,L1,L2,Ldamp)
     
     
     angle = atan2(dy,dx);
-    dcm = angle2dcm(angle,0,0);
-    dcm = dcm(1:2,1:2);
+    %     dcm = angle2dcm(angle,0,0);
+    %     dcm = dcm(1:2,1:2);
+    dcm = [cos(-angle), -sin(-angle); sin(-angle), cos(-angle)];
     
     arm1 = dcm'*arm1 + repmat([x1;y1],1,length(arm1(1,:)));
     arm2 = dcm'*arm2 + repmat([x1;y1],1,length(arm2(1,:)));

@@ -13,8 +13,9 @@ function [handle] = DrawSpring(x1,y1,x2,y2,Width,Ncoils,LnoCoils)
     points = [x;y];
     
     angle = atan2(dy,dx);
-    dcm = angle2dcm(angle,0,0);
-    dcm = dcm(1:2,1:2);
+%     dcm = angle2dcm(angle,0,0);
+%     dcm = dcm(1:2,1:2);
+    dcm = [cos(-angle), -sin(-angle); sin(-angle), cos(-angle)];
     
     points = dcm'*points + repmat([x1;y1],1,length(points(1,:)));
     

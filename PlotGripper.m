@@ -13,8 +13,9 @@ function [handle] = PlotGripper(X,Gripper)
     yGrip = [t/2,t/2,L/2,L/2,-L/2,-L/2,-t/2,-t/2];
     Grip = [xGrip;yGrip];
     
-    dcm = angle2dcm(-theta,0,0);
-    dcm = dcm(1:2,1:2);
+%     dcm = angle2dcm(-theta,0,0);
+%     dcm = dcm(1:2,1:2);
+    dcm = [cos(theta), -sin(theta); sin(theta), cos(theta)];
     Grip = dcm'*Grip + repmat([xG;yG],1,length(Grip(1,:)));
     
     handle(1) = patch(Grip(1,:),Grip(2,:),[.5,.5,.5]);
