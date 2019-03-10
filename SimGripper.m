@@ -87,8 +87,8 @@ angvel_failure = zeros(1,100);
 i_success = 1;
 i_failure = 1;
 tic
-for offset = 0.1 %-.13:.05:.13
-    for rotation =  100 % -1000:100:1000
+for offset = -.13:.05:.13
+    for rotation =  -1000:100:1000
         omega = rotation*pi/180;
         [x_o, y_o, x_o_dot, y_o_dot] = GetICs(offset, angle, vel, Object, Gripper, Dist);
         X_0 = [x_G, y_G, theta, x_G_dot, y_G_dot, theta_dot, ...
@@ -112,22 +112,22 @@ angvel_success = angvel_success(1:i_success-1);
 offset_failure = offset_failure(1:i_failure-1);
 angvel_failure = angvel_failure(1:i_failure-1);
 
-% figure;
-% hold on;
-% plot(offset_success, angvel_success, 'x')
-% plot(offset_failure, angvel_failure, 'o')
-% 
+figure;
+hold on;
+plot(offset_success, angvel_success, 'x')
+plot(offset_failure, angvel_failure, 'o')
+
 
 
 %ODE45 solver. Only works for non-stiff formulations
 % [Tout,Xout] = ode45(@(t,x)GripperDynamics(t,x,Gripper,Object),[0,T],X_0,options);
 
-%Manual Euler implementation. 
-[Tout,Xout,caught_i] = GripperDynamicsEuler(T,dt,X_0,Gripper,Object);
-if caught_i
-    Tout = Tout(1:caught_i-1);
-    Xout = Xout(1:caught_i-1,:);
-end
+%Manual Euler implemen  tation. 
+% [Tout,Xout,caught_i] = GripperDynamicsEuler(T,dt,X_0,Gripper,Object);
+% if caught_i
+%     Tout = Tout(1:caught_i-1);
+%     Xout = Xout(1:caught_i-1,:);
+% end
 
 % AnimateGripper(Tout,Xout,Gripper,Object,speed);
 %MovieGen(Tout,Xout,Gripper,Object,speed,filename)

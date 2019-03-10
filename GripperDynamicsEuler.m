@@ -47,23 +47,7 @@ function [Tout,Xout,caught_i] = GripperDynamicsEuler(T,dt,X_0,Gripper,Object)
         V_Ocm_N = [xO_dot; yO_dot; 0];
         V_GO_N = V_Gcm_N + cross(w_G_N, r_GO_Gcm_N); % translational + rotational = total vel of contact point on gripper
         V_OG_N = V_Ocm_N + cross(w_O_N, r_OG_Ocm_N); % translational + rotational = total vel of contact point on object
-        V_OG_GO_N = V_OG_N - V_GO_N; % relative total velocity between object & gripper
-        
-        if mod(i,1000) == 0
-            
-           plot(r_Ocm_N0_N(1), r_Ocm_N0_N(2), 'bo')
-            hold on;
-            plot(r_Gcm_N0_N(1), r_Gcm_N0_N(2), 'rx')
-            plot([r_Gcm_N0_N(1),r_Gcm_N0_N(1)+normal(1)], [r_Gcm_N0_N(2),r_Gcm_N0_N(2)+normal(2)], 'k:')
-            plot([r_Gcm_N0_N(1),r_Gcm_N0_N(1)+tangent(1)], [r_Gcm_N0_N(2),r_Gcm_N0_N(2)+tangent(2)], 'k:')
-
-            plot([r_Ocm_N0_N(1),r_Ocm_N0_N(1)+V_Ocm_N(1)], [r_Ocm_N0_N(2),r_Ocm_N0_N(2)+V_Ocm_N(2)], 'b-')
-            plot([r_Ocm_N0_N(1),r_Ocm_N0_N(1)+V_OG_N(1)], [r_Ocm_N0_N(2),r_Ocm_N0_N(2)+V_OG_N(2)], 'm-')
-            % plot([r_Ocm_N0_N(1),r_Ocm_N0_N(1)+V_OG_GO_N(1)], [r_Ocm_N0_N(2),r_Ocm_N0_N(2)+V_OG_GO_N(2)], 'm-')
-            
-
-        end
-        
+        V_OG_GO_N = V_OG_N - V_GO_N; % relative total velocity between object & gripper        
     
         P = dot(r_Ocm_Gp_N, normal) - Object.R; % normal distance of contact
         P_dot = dot(V_OG_GO_N, normal); %penetration velocity

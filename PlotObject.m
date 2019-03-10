@@ -2,8 +2,8 @@ function [handle] = PlotObject(X,Object, Dot)
     
     handle = zeros(2,1);
 
-    xO = X(7);
-    yO = X(8);
+    xO = X(1);
+    yO = X(2);
     R = Object.R;
     
     Dot = mod(Dot,2*pi);
